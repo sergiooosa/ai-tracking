@@ -4,9 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FuturisticButton } from '@/components/ui/FuturisticButton';
 import { AnimatedText } from '@/components/ui/AnimatedText';
-import { ArrowLeft, Zap, Brain, TrendingUp, Users, Target, DollarSign, BarChart3, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Zap, Brain, TrendingUp, Users, Target, BarChart3, CheckCircle } from 'lucide-react';
 import { AnalysisResponse, AnalysisState, LinkItem } from '@/types';
-import { formatNumber } from '@/lib/utils';
 
 interface AnalysisResultsProps {
   links: LinkItem[];
@@ -40,7 +39,8 @@ const AnalysisResults = ({ links, onBack }: AnalysisResultsProps) => {
     
     // Llamar al webhook solo una vez
     analyzeLinks();
-  }, []); // Dependencias vacías para ejecutar solo una vez
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Solo ejecutar al montar
 
   useEffect(() => {
     if (analysisState !== 'loading') return;
@@ -67,7 +67,7 @@ const AnalysisResults = ({ links, onBack }: AnalysisResultsProps) => {
       clearInterval(progressInterval);
       clearInterval(stepInterval);
     };
-  }, [analysisState]);
+  }, [analysisState, loadingSteps]);
 
   const analyzeLinks = async () => {
     try {

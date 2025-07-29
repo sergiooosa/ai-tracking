@@ -6,7 +6,7 @@ import { FuturisticButton } from '@/components/ui/FuturisticButton';
 import { GlowInput } from '@/components/ui/GlowInput';
 import { AnimatedText } from '@/components/ui/AnimatedText';
 import { Plus, X, Link as LinkIcon, Globe, CheckCircle, AlertCircle } from 'lucide-react';
-import { LinkItem, AnalysisResponse } from '@/types';
+import { LinkItem } from '@/types';
 import { generateId, isValidUrl, getDomainFromUrl } from '@/lib/utils';
 
 const LinkManager = () => {
@@ -15,6 +15,7 @@ const LinkManager = () => {
   const [newCloser, setNewCloser] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [analysisResults, setAnalysisResults] = useState<any>(null);
   const [hasStartedAnalysis, setHasStartedAnalysis] = useState(false);
 
@@ -167,21 +168,22 @@ const LinkManager = () => {
                 </thead>
                 <tbody>
                   {(analysisResults?.resumen?.closers || analysisResults?.closers) ? (
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     (analysisResults.resumen?.closers || analysisResults.closers)
                       .sort((a: any, b: any) => (b.closeRate || 0) - (a.closeRate || 0))
-                      .map((closer: any, index: number) => (
-                        <tr
-                          key={closer.name}
-                          className="border-b border-gray-800 hover:bg-gray-800/30 transition-colors"
-                        >
+                      .map((closer: any) => (
+                                                 <tr
+                           key={closer.name}
+                           className="border-b border-gray-800 hover:bg-gray-800/30 transition-colors"
+                         >
                           <td className="py-4 px-4">
                             <div className="flex items-center gap-3">
                               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
-                                <span className="text-blue-400 font-bold">
-                                  {closer.name.charAt(0).toUpperCase()}
-                                </span>
-                              </div>
-                              <span className="text-white font-medium">{closer.name}</span>
+                                                               <span className="text-blue-400 font-bold">
+                                 {closer.name.charAt(0).toUpperCase()}
+                               </span>
+                             </div>
+                             <span className="text-white font-medium">{closer.name}</span>
                             </div>
                           </td>
                                                      <td className="text-center py-4 px-4">
@@ -248,7 +250,7 @@ const LinkManager = () => {
                 ) : (
                   <div className="text-center text-gray-400 py-8">
                     <p>⚠️ No se pudo cargar el reporte detallado</p>
-                    <p className="text-sm mt-2">Los datos del webhook no contienen el campo 'output'</p>
+                    <p className="text-sm mt-2">Los datos del webhook no contienen el campo &apos;output&apos;</p>
                   </div>
                 )}
               </div>

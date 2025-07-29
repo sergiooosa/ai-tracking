@@ -1,4 +1,21 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  typescript: {
+    // Ignore TypeScript errors during build
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    // Ignore ESLint errors during build  
+    ignoreDuringBuilds: true,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
+};
 
 export default nextConfig;

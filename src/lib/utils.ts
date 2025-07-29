@@ -16,7 +16,7 @@ export function isValidUrl(string: string): boolean {
   try {
     const url = new URL(string);
     return url.protocol === 'http:' || url.protocol === 'https:';
-  } catch (_) {
+  } catch {
     return false;
   }
 }
@@ -25,7 +25,7 @@ export function isValidUrl(string: string): boolean {
 export function getDomainFromUrl(url: string): string {
   try {
     return new URL(url).hostname;
-  } catch (_) {
+  } catch {
     return '';
   }
 }
