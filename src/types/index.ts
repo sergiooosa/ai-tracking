@@ -47,6 +47,7 @@ export interface CallMetrics {
   llamadas_cerradas: number;
   close_rate: string;
   cash_collected: number;
+  facturacion: number;
 }
 
 export interface AnalysisOutput {

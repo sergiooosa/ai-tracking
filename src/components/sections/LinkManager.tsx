@@ -155,7 +155,7 @@ const LinkManager = () => {
               📊 Métricas de Llamadas
             </h2>
             
-            <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-6 gap-6">
               {analysisResults?.metrics ? (
                 <>
                   <div className="bg-gray-800/30 rounded-xl p-4 text-center border border-gray-700/50 hover:border-blue-500/30 transition-colors">
@@ -190,6 +190,12 @@ const LinkManager = () => {
                       ${analysisResults.metrics.cash_collected || 0}
                     </div>
                     <div className="text-sm text-gray-300 font-medium">Cash Collected</div>
+                  </div>
+                  <div className="bg-gray-800/30 rounded-xl p-4 text-center border border-gray-700/50 hover:border-orange-500/30 transition-colors">
+                    <div className="text-3xl font-bold text-orange-400 mb-2">
+                      ${analysisResults.metrics.facturacion || 0}
+                    </div>
+                    <div className="text-sm text-gray-300 font-medium">Facturación</div>
                   </div>
                 </>
               ) : (
