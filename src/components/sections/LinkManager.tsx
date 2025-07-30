@@ -210,29 +210,56 @@ const LinkManager = () => {
           {/* Analysis Report */}
           <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-800">
             <h2 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              📖 Reporte Detallado de Análisis
+              📖 Análisis Detallado de Leads
             </h2>
             
-            <div className="bg-gray-800/30 rounded-xl p-6 text-gray-300 leading-relaxed">
-              <div className="whitespace-pre-wrap text-sm lg:text-base" style={{ lineHeight: '1.7' }}>
-                {analysisResults?.output ? (
-                  analysisResults.output.split('\n').map((line: string, index: number) => (
-                    <div key={index} className="mb-2">
-                      {line.includes('**') ? (
-                        <div dangerouslySetInnerHTML={{ 
-                          __html: line
-                            .replace(/\*\*(.*?)\*\*/g, '<strong class="text-blue-400 font-bold">$1</strong>')
-                            .replace(/\*(.*?)\*/g, '<em class="text-purple-300 italic">$1</em>')
-                        }} />
-                      ) : (
-                        <span>{line || <br />}</span>
-                      )}
-                    </div>
-                  ))
+            <div className="bg-gray-800/30 rounded-xl p-6 text-gray-300 leading-relaxed border border-gray-700/50">
+              <div className="whitespace-pre-wrap text-sm lg:text-base font-mono" style={{ lineHeight: '1.6' }}>
+                {(analysisResults?.analysis?.output || analysisResults?.output) ? (
+                  (analysisResults.analysis?.output || analysisResults.output)
+                    .split('\n')
+                    .map((line: string, index: number) => (
+                      <div key={index} className="mb-1">
+                        {line.startsWith('**') && line.endsWith('**') ? (
+                          // Títulos principales
+                          <div className="text-blue-400 font-bold text-lg mt-4 mb-2 border-l-4 border-blue-400 pl-3">
+                            {line.replace(/\*\*/g, '')}
+                          </div>
+                        ) : line.startsWith('* ') ? (
+                          // Elementos de lista
+                          <div className="text-gray-300 ml-4 flex items-start gap-2">
+                            <span className="text-green-400 text-lg">•</span> 
+                            <span>{line.substring(2)}</span>
+                          </div>
+                        ) : line.startsWith('```') ? (
+                          // Bloques de código (ignorar)
+                          null
+                        ) : line.includes('**') ? (
+                          // Texto con negritas
+                          <div dangerouslySetInnerHTML={{
+                            __html: line
+                              .replace(/\*\*(.*?)\*\*/g, '<strong class="text-cyan-400 font-bold">$1</strong>')
+                              .replace(/\*(.*?)\*/g, '<em class="text-purple-300 italic">$1</em>')
+                          }} />
+                        ) : line.trim() === '' ? (
+                          // Líneas vacías
+                          <div className="h-2"></div>
+                        ) : (
+                          // Texto normal
+                          <span className="text-gray-300">{line}</span>
+                        )}
+                      </div>
+                    ))
                 ) : (
                   <div className="text-center text-gray-400 py-8">
-                    <p>⚠️ No se pudo cargar el reporte detallado</p>
+                    <p>⚠️ No se pudo cargar el análisis detallado</p>
                     <p className="text-sm mt-2">Los datos del webhook no contienen el campo &apos;output&apos;</p>
+                    <details className="mt-2">
+                      <summary className="cursor-pointer text-xs text-blue-400">Ver datos recibidos</summary>
+                      <pre className="text-xs bg-gray-900 p-2 rounded mt-2 text-left overflow-auto">
+                        {JSON.stringify(analysisResults, null, 2)}
+                      </pre>
+                    </details>
                   </div>
                 )}
               </div>
