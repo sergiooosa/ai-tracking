@@ -41,23 +41,21 @@ export type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
 export type ThemeColor = 'blue' | 'purple' | 'neon' | 'dark' | 'cyan' | 'magenta';
 
 // 🔥 Analysis Response Types
-export interface CloserData {
-  name: string;
-  totalProspectos: number;
-  totalCierres: number;
-  closeRate: number;
+export interface CallMetrics {
+  llamadas_tomadas: number;
+  llamadas_ofertadas: number;
+  llamadas_cerradas: number;
+  close_rate: string;
+  cash_collected: number;
 }
 
-export interface AnalysisResume {
-  closers: CloserData[];
-  totalCashCollected: number;
-  totalFacturacion: number;
-}
-
-export interface AnalysisResponse {
-  resumen: AnalysisResume;
-  resumenTexto: string;
+export interface AnalysisOutput {
   output: string;
+}
+
+export interface NewAnalysisResponse {
+  metrics: CallMetrics;
+  analysis: AnalysisOutput;
 }
 
 export type AnalysisState = 'idle' | 'loading' | 'success' | 'error'; 
