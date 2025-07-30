@@ -81,11 +81,10 @@ const LinkManager = () => {
         let analysisData = null;
         
         if (Array.isArray(data) && data.length >= 2) {
-          // Formato esperado: [resumen_objeto, output_objeto]
+          // Nuevo formato: [metrics_objeto, output_objeto]
           analysisData = {
-            resumen: data[0].resumen,
-            resumenTexto: data[0].resumenTexto,
-            output: data[1].output
+            metrics: data[0],
+            analysis: data[1]
           };
         } else if (Array.isArray(data) && data.length > 0) {
           // Fallback: primer elemento tiene todo
@@ -97,8 +96,8 @@ const LinkManager = () => {
         
         console.log('Datos de análisis procesados:', analysisData);
         
-        // Verificar que tengamos los datos necesarios (más flexible)
-        if (analysisData && (analysisData.resumen || analysisData.closers) && analysisData.output) {
+        // Verificar que tengamos los datos necesarios (formato nuevo)
+        if (analysisData && ((analysisData.metrics && analysisData.analysis) || analysisData.output)) {
           setAnalysisResults(analysisData);
           setShowResults(true);
         } else {
@@ -150,78 +149,61 @@ const LinkManager = () => {
             </FuturisticButton>
           </div>
 
-          {/* Closers Table */}
+                    {/* Call Metrics Grid */}
           <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-gray-800">
             <h2 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-              📊 Resumen de Closers
+              📊 Métricas de Llamadas
             </h2>
             
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-700">
-                    <th className="text-left py-3 px-4 text-gray-300 font-semibold">Nombre del Closer</th>
-                    <th className="text-center py-3 px-4 text-gray-300 font-semibold">Total Prospectos</th>
-                    <th className="text-center py-3 px-4 text-gray-300 font-semibold">Total Cierres</th>
-                    <th className="text-center py-3 px-4 text-gray-300 font-semibold">Close Rate</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(analysisResults?.resumen?.closers || analysisResults?.closers) ? (
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    (analysisResults.resumen?.closers || analysisResults.closers)
-                      .sort((a: any, b: any) => (b.closeRate || 0) - (a.closeRate || 0))
-                      .map((closer: any) => (
-                                                 <tr
-                           key={closer.name}
-                           className="border-b border-gray-800 hover:bg-gray-800/30 transition-colors"
-                         >
-                          <td className="py-4 px-4">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
-                                                               <span className="text-blue-400 font-bold">
-                                 {closer.name.charAt(0).toUpperCase()}
-                               </span>
-                             </div>
-                             <span className="text-white font-medium">{closer.name}</span>
-                            </div>
-                          </td>
-                                                     <td className="text-center py-4 px-4">
-                             <span className="text-2xl font-bold text-blue-400">
-                               {closer.totalProspectos || 0}
-                             </span>
-                           </td>
-                           <td className="text-center py-4 px-4">
-                             <span className="text-2xl font-bold text-green-400">
-                               {closer.totalCierres || 0}
-                             </span>
-                           </td>
-                           <td className="text-center py-4 px-4">
-                             <span className={`text-2xl font-bold ${
-                               (closer.closeRate || 0) > 15 ? 'text-green-400' :
-                               (closer.closeRate || 0) > 5 ? 'text-yellow-400' : 'text-red-400'
-                             }`}>
-                               {(closer.closeRate || 0).toFixed(1)}%
-                             </span>
-                           </td>
-                        </tr>
-                      ))
-                  ) : (
-                                         <tr>
-                       <td colSpan={4} className="text-center py-8 text-gray-400">
-                         <p>⚠️ No se pudieron cargar los datos de closers</p>
-                         <p className="text-sm mt-2">Datos recibidos sin información de closers</p>
-                         <details className="mt-2">
-                           <summary className="cursor-pointer text-xs text-blue-400">Ver datos recibidos</summary>
-                           <pre className="text-xs bg-gray-900 p-2 rounded mt-2 text-left overflow-auto">
-                             {JSON.stringify(analysisResults, null, 2)}
-                           </pre>
-                         </details>
-                       </td>
-                     </tr>
-                  )}
-                </tbody>
-              </table>
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
+              {analysisResults?.metrics ? (
+                <>
+                  <div className="bg-gray-800/30 rounded-xl p-4 text-center border border-gray-700/50 hover:border-blue-500/30 transition-colors">
+                    <div className="text-3xl font-bold text-blue-400 mb-2">
+                      {analysisResults.metrics.llamadas_tomadas || 0}
+                    </div>
+                    <div className="text-sm text-gray-300 font-medium">Llamadas Tomadas</div>
+                  </div>
+                  <div className="bg-gray-800/30 rounded-xl p-4 text-center border border-gray-700/50 hover:border-purple-500/30 transition-colors">
+                    <div className="text-3xl font-bold text-purple-400 mb-2">
+                      {analysisResults.metrics.llamadas_ofertadas || 0}
+                    </div>
+                    <div className="text-sm text-gray-300 font-medium">Llamadas Ofertadas</div>
+                  </div>
+                  <div className="bg-gray-800/30 rounded-xl p-4 text-center border border-gray-700/50 hover:border-green-500/30 transition-colors">
+                    <div className="text-3xl font-bold text-green-400 mb-2">
+                      {analysisResults.metrics.llamadas_cerradas || 0}
+                    </div>
+                    <div className="text-sm text-gray-300 font-medium">Llamadas Cerradas</div>
+                  </div>
+                  <div className="bg-gray-800/30 rounded-xl p-4 text-center border border-gray-700/50 hover:border-yellow-500/30 transition-colors">
+                    <div className={`text-3xl font-bold mb-2 ${
+                      parseFloat(analysisResults.metrics.close_rate?.replace('%', '') || '0') > 15 ? 'text-green-400' :
+                      parseFloat(analysisResults.metrics.close_rate?.replace('%', '') || '0') > 5 ? 'text-yellow-400' : 'text-red-400'
+                    }`}>
+                      {analysisResults.metrics.close_rate || '0%'}
+                    </div>
+                    <div className="text-sm text-gray-300 font-medium">Close Rate</div>
+                  </div>
+                  <div className="bg-gray-800/30 rounded-xl p-4 text-center border border-gray-700/50 hover:border-cyan-500/30 transition-colors">
+                    <div className="text-3xl font-bold text-cyan-400 mb-2">
+                      ${analysisResults.metrics.cash_collected || 0}
+                    </div>
+                    <div className="text-sm text-gray-300 font-medium">Cash Collected</div>
+                  </div>
+                </>
+              ) : (
+                <div className="col-span-full text-center py-8 text-gray-400">
+                  <p>⚠️ No se pudieron cargar las métricas</p>
+                  <p className="text-sm mt-2">Datos recibidos sin información de métricas</p>
+                  <details className="mt-2">
+                    <summary className="cursor-pointer text-xs text-blue-400">Ver datos recibidos</summary>
+                    <pre className="text-xs bg-gray-900 p-2 rounded mt-2 text-left overflow-auto">
+                      {JSON.stringify(analysisResults, null, 2)}
+                    </pre>
+                  </details>
+                </div>
+              )}
             </div>
           </div>
 
