@@ -1,46 +1,43 @@
-// 🎯 Core Application Types
-
-export interface LinkItem {
-  id: string;
-  url: string;
-  domain?: string;
-  title?: string;
-  closer: string;
-  isValid: boolean;
-  createdAt: Date;
+// 📊 NEW REPORT SYSTEM TYPES
+export interface ReportMetrics {
+  totalLeads: number;
+  asistieron: number;
+  calificados: number;
+  ofertados: number;
+  vendidos: number;
+  cashTotal: number;
+  closeRate: string;
+  porcentajeCalificados: string;
 }
 
-export interface ProcessState {
-  isAnalyzing: boolean;
-  currentStep: string;
-  progress: number;
-  completedSteps: string[];
+export interface LeadData {
+  nombre: string;
+  telefono: string;
+  fechaReunion: string;
+  closerACargo: string;
+  asistio: boolean;
+  calificada: boolean; // Campo booleano separado
+  status: 'ofertada' | 'vendida'; // Estado de la venta simplificado
+  cashCollected: number;
+  facturacion: number;
+  notas: string;
 }
 
-export interface Benefit {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-  metric?: {
-    value: number;
-    suffix: string;
-  };
+export interface ReportResponse {
+  metrics: ReportMetrics;
+  leads: LeadData[];
 }
 
-export interface AnimationVariants {
-  initial: Record<string, unknown>;
-  animate: Record<string, unknown>;
-  exit?: Record<string, unknown>;
-  transition?: Record<string, unknown>;
+export interface DateRangeOption {
+  label: string;
+  value: string;
+  days?: number;
+  isCustom?: boolean;
 }
 
-export type ButtonVariant = 'primary' | 'secondary' | 'neon' | 'ghost';
-export type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
+export type ReportState = 'idle' | 'loading' | 'success' | 'error';
 
-export type ThemeColor = 'blue' | 'purple' | 'neon' | 'dark' | 'cyan' | 'magenta';
-
-// 🔥 Analysis Response Types
+// 🔥 Legacy Analysis Response Types (kept for reference, can be removed if not needed)
 export interface CallMetrics {
   llamadas_tomadas: number;
   llamadas_ofertadas: number;
@@ -49,14 +46,3 @@ export interface CallMetrics {
   cash_collected: number;
   facturacion: number;
 }
-
-export interface AnalysisOutput {
-  output: string;
-}
-
-export interface NewAnalysisResponse {
-  metrics: CallMetrics;
-  analysis: AnalysisOutput;
-}
-
-export type AnalysisState = 'idle' | 'loading' | 'success' | 'error'; 

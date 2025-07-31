@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
@@ -8,15 +8,17 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'AI Tracking Revolution | Análisis Inteligente Instantáneo',
-  description: 'Sistema revolucionario de tracking automático con IA. Análisis instantáneo, feedback personalizado y tracking sin esfuerzo.',
-  keywords: 'AI, tracking, análisis, feedback, inteligencia artificial, automatización',
-  authors: [{ name: 'AI Tracking Team' }],
+  title: 'Dashboard de Reportes | Análisis de Leads con IA',
+  description: 'Sistema avanzado de reportes y análisis de leads. Métricas en tiempo real y gestión inteligente de datos.',
+  keywords: 'reportes, leads, análisis, dashboard, CRM, Go High Level',
+  authors: [{ name: 'Analytics Team' }],
 }
 
-export const viewport = {
+export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  userScalable: false,
+  maximumScale: 1,
 }
 
 export default function RootLayout({
@@ -26,15 +28,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={`${inter.variable} font-sans antialiased bg-gray-950 text-white min-h-screen`}>
+      <body className={`${inter.variable} font-sans antialiased bg-background text-foreground min-h-screen`}>
         <div className="relative">
-          {/* Background gradient overlay */}
-          <div className="fixed inset-0 bg-gradient-to-br from-blue-950/20 via-purple-950/10 to-gray-950 pointer-events-none" />
-          
-          {/* Content */}
-          <div className="relative z-10">
-            {children}
-          </div>
+          {children}
         </div>
       </body>
     </html>
